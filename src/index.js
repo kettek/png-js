@@ -294,7 +294,8 @@ class IndexedPNG {
     return ret;
   }
 
-  async toImageData(palette = this.decodePalette()) {
+  async toImageData(options) {
+    const palette = options.palette || this.decodedPalette
     if (!this.decodedPixels) {
       await this.decode()
     }
@@ -308,6 +309,7 @@ class IndexedPNG {
       pixels[j++] = palette[index+2]  // B
       pixels[j++] = palette[index+3]  // A
     }
+    console.log(pixels)
     return new ImageData(pixels, this.width)
   }
 
