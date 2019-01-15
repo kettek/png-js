@@ -299,18 +299,43 @@ class IndexedPNG {
     if (!this.decodedPixels) {
       await this.decode()
     }
-    // Allocate RGBA buffer
-    const pixels = new Uint8ClampedArray(this.decodedPixels.length * 4)
-    let j = 0
-    for (let i = 0; i < this.decodedPixels.length; i++) {
-      let index = this.decodedPixels[i] * 4
-      pixels[j++] = palette[index]    // R
-      pixels[j++] = palette[index+1]  // G
-      pixels[j++] = palette[index+2]  // B
-      pixels[j++] = palette[index+3]  // A
+    if (options.clip) {
+      // Ensure some sane defaults
+      if (options.clip.x == undefined) options.clip.x = 0
+      if (options.clip.y == undefined) options.clip.y = 0
+      if (options.clip.w == undefined) options.clip.w = this.width - options.clip.x
+      if (options.clip.h == undefined) options.clip.h = this.height - options.clip.y
+      // Now check for user errors.
+      if (options.clip.x < 0 || options.clip.x >= this.width) throw new Error("clip.x is out of bounds")
+      if (options.clip.y < 0 || options.clip.y >= this.height) throw new Error("clip.y is out of bounds")
+      if (options.clip.w <= 0 || options.clip.w > this.width) throw new Error("clip.w is out of bounds")
+      if (options.clip.h <= 0 || options.clip.h > this.height) throw new Error("clip.h is out of bounds")
+      // Now we can get our clipped array.
+      const pixels = new Uint8ClampedArray(options.clip.w*options.clip.h * 4)
+      for (let x = 0; x < options.clip.w; x++) {
+        for (let y = 0; y < options.clip.h; y++) {
+          let i = (x + y * options.clip.w) * 4
+          let index = this.decodedPixels[(x + options.clip.x) + ( (y + options.clip.y) * this.width)] * 4
+          pixels[i++] = palette[index]
+          pixels[i++] = palette[index+1]
+          pixels[i++] = palette[index+2]
+          pixels[i++] = palette[index+3]
+        }
+      }
+      return new ImageData(pixels, options.clip.w)
+    } else {
+      // Allocate RGBA buffer
+      const pixels = new Uint8ClampedArray(this.decodedPixels.length * 4)
+      let j = 0
+      for (let i = 0; i < this.decodedPixels.length; i++) {
+        let index = this.decodedPixels[i] * 4
+        pixels[j++] = palette[index]    // R
+        pixels[j++] = palette[index+1]  // G
+        pixels[j++] = palette[index+2]  // B
+        pixels[j++] = palette[index+3]  // A
+      }
+      return new ImageData(pixels, this.width)
     }
-    console.log(pixels)
-    return new ImageData(pixels, this.width)
   }
 
   async decode() {
