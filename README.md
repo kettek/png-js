@@ -57,7 +57,10 @@ async decode()
 : Decodes the palette and the pixel data of the PNG data passed into the constructor. Calls `decodePixels()` and `decodePalette()`.
 
 [ImageData](https://developer.mozilla.org/en-US/docs/Web/API/ImageData) async toImageData([ImageDataOptions](#imagedataoptions)) 
-: Returns ImageData. Calls `decode()` automatically if PNG has not been decoded.
+: Returns ImageData. Calls `toPNGData(options)`.
+
+[PNGData](#pngdata) async toPNGData([ImageDataOptions](#imagedataoptions))
+: Returns PNGData. Calls `decode()` automatically if PNG has not been decoded.
   
 ### ImageDataOptions
 Object containing options to apply during `toImageData()`.
@@ -97,3 +100,11 @@ let clip = {
     h: 32,
 }
 ```
+
+### PNGData
+Object containing the pixel data and row width.
+
+| Property | Type  
+|----------|------------
+| pixels   | [Uint8ClampedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray) | RGBA pixel data.
+| width    | Number | Width of each row of pixel data.

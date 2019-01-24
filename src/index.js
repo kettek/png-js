@@ -294,7 +294,7 @@ class IndexedPNG {
     return ret;
   }
 
-  async toImageData(options) {
+  async toPNGData(options) {
     const palette = options.palette || this.decodedPalette
     if (!this.decodedPixels) {
       await this.decode()
@@ -322,7 +322,7 @@ class IndexedPNG {
           pixels[i++] = palette[index+3]
         }
       }
-      return new ImageData(pixels, options.clip.w)
+      return { pixels: pixels, width: options.clip.w }
     } else {
       // Allocate RGBA buffer
       const pixels = new Uint8ClampedArray(this.decodedPixels.length * 4)
@@ -334,8 +334,14 @@ class IndexedPNG {
         pixels[j++] = palette[index+2]  // B
         pixels[j++] = palette[index+3]  // A
       }
-      return new ImageData(pixels, this.width)
+      return { pixels: pixels, width: this.width }
     }
+
+  }
+
+  async toImageData(options) {
+    let data = await this.toPNGData(options)
+    return new ImageData(data.pixels, data.width)
   }
 
   async decode() {
