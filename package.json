@@ -1,5 +1,5 @@
 {
-  "name": "@mindfire/png-js",
+  "name": "@kettek/png-js",
   "description": "A PNG decoder in ES6 JavaScript.",
   "version": "1.2.0",
   "main": "dist/png-js.cjs.js",
@@ -9,9 +9,9 @@
     "./dist/png-js.cjs.js": "./dist/png-js.browser.cjs.js"
   },
   "author": {
-    "name": "Mindfire Games, LLC",
-    "email": "founders@mindfire.games",
-    "url": "https://mindfire.games/"
+    "name": "Ketchetwahmeegwun T. Southall",
+    "email": "kts@kettek.net",
+    "url": "https://kettek.net/"
   },
   "scripts": {
     "build": "rollup -c",
