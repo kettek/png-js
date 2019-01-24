@@ -1,6 +1,8 @@
 # png-js
 This is a modified version of [png.js](https://github.com/react-pdf/png.js) that is intended to be used for palette swapping within the browser.
 
+**NOTE**: Only supports indexed PNGs for obvious reasons. All others will cause IndexedPNG to throw during construction.
+
 ## Usage
 The following shows the process of loading a PNG file and rendering it to a canvas with its palette data reversed.
 
