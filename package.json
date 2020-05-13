@@ -1,7 +1,7 @@
 {
-  "name": "@kettek/png-js-palettized",
+  "name": "png-js-palettized",
   "description": "A PNG decoder that supports palette manipulation.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "dist/png-js.cjs.js",
   "module": "dist/png-js.es.js",
   "repository": "github:kettek/png-js",
